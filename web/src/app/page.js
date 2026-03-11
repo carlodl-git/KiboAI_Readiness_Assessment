@@ -1658,6 +1658,9 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
   const [tab, setTab] = useState("assess");
   const [audienceFilter, setAudienceFilter] = useState("all");
   const [selectedUseCaseKey, setSelectedUseCaseKey] = useState(null);
+  const [mainTakeaway, setMainTakeaway] = useState("");
+  const [mainTakeawayLoading, setMainTakeawayLoading] = useState(false);
+  const [mainTakeawayError, setMainTakeawayError] = useState("");
   const scores = assessment.scores;
   const notes = assessment.notes || {};
   const dim = DIMENSIONS[activeDim];
@@ -1704,6 +1707,70 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
     (a, d) => a + d.questions.filter((q) => scores[q.id]).length,
     0,
   );
+
+  const buildNotesPayload = () => {
+    const items = [];
+    DIMENSIONS.forEach((d) => {
+      d.questions.forEach((q) => {
+        const noteText = notes[q.id];
+        if (noteText && noteText.trim()) {
+          items.push({
+            id: q.id,
+            dimensionId: d.id,
+            dimensionTitle: d.title,
+            question: q.label,
+            note: noteText.trim(),
+          });
+        }
+      });
+    });
+    return items;
+  };
+
+  const handleGenerateMainTakeaway = async () => {
+    const noteItems = buildNotesPayload();
+    if (!noteItems.length) {
+      setMainTakeawayError(
+        "Add some notes to the questions first, then try generating a takeaway.",
+      );
+      return;
+    }
+
+    setMainTakeawayError("");
+    setMainTakeawayLoading(true);
+    try {
+      const res = await fetch("/api/main-takeaway", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          companyName: assessment.companyName,
+          notes: noteItems,
+          overallScore: overall,
+          dimensionScores: allDimScores,
+        }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        setMainTakeawayError(
+          errData?.error ||
+            "Could not generate a takeaway. Please try again in a moment.",
+        );
+        return;
+      }
+
+      const data = await res.json();
+      setMainTakeaway(data.takeaway || "");
+    } catch (e) {
+      setMainTakeawayError(
+        "Something went wrong while calling the AI service. Please try again.",
+      );
+    } finally {
+      setMainTakeawayLoading(false);
+    }
+  };
 
   // Flattened use cases with gap metrics to support "top 3 easiest" and details
   const allUseCasesFlat = USE_CASE_GROUPS.flatMap((group) =>
@@ -2768,6 +2835,104 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                     </div>
                   );
                 })}
+              </div>
+            </div>
+
+            {/* Main takeaway from notes */}
+            <div
+              style={{
+                marginBottom: 24,
+                background: "#ffffff",
+                border: "1px solid rgba(226,232,240,1)",
+                borderRadius: 10,
+                padding: "12px 14px",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 10,
+                  letterSpacing: 3,
+                  textTransform: "uppercase",
+                  color: "#9ca3af",
+                  marginBottom: 6,
+                  fontWeight: 700,
+                }}
+              >
+                Main takeaway
+              </div>
+              <p
+                style={{
+                  fontSize: 12,
+                  color: "#6b7280",
+                  margin: "0 0 8px",
+                }}
+              >
+                Use the notes captured during the workshop to generate a concise, executive-ready
+                summary of this assessment.
+              </p>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 8,
+                  alignItems: "center",
+                  marginBottom: 6,
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={handleGenerateMainTakeaway}
+                  disabled={mainTakeawayLoading}
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: 999,
+                    border: "none",
+                    cursor: mainTakeawayLoading ? "wait" : "pointer",
+                    fontSize: 12,
+                    fontWeight: 600,
+                    fontFamily: "'DM Sans',sans-serif",
+                    background: "linear-gradient(135deg,#1d4ed8,#2563eb)",
+                    color: "#ffffff",
+                    opacity: mainTakeawayLoading ? 0.8 : 1,
+                  }}
+                >
+                  {mainTakeawayLoading ? "Generating…" : "Generate from notes"}
+                </button>
+                <span
+                  style={{
+                    fontSize: 11,
+                    color: "#6b7280",
+                  }}
+                >
+                  Calls OpenAI using your per-question notes; nothing is stored in this app.
+                </span>
+              </div>
+              {mainTakeawayError && (
+                <div
+                  style={{
+                    fontSize: 11,
+                    color: "#b91c1c",
+                    marginBottom: 6,
+                  }}
+                >
+                  {mainTakeawayError}
+                </div>
+              )}
+              <div
+                style={{
+                  minHeight: 70,
+                  fontSize: 12,
+                  color: "#111827",
+                  background: "#f9fafb",
+                  borderRadius: 8,
+                  padding: "8px 10px",
+                  border: "1px dashed rgba(148,163,184,0.9)",
+                  whiteSpace: "pre-line",
+                }}
+              >
+                {mainTakeaway
+                  ? mainTakeaway
+                  : "Click “Generate from notes” to create a 3–6 sentence executive summary highlighting the key themes, strengths, and gaps across dimensions."}
               </div>
             </div>
 
