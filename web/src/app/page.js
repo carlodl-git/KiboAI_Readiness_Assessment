@@ -453,6 +453,227 @@ const DIMENSIONS = [
   },
 ];
 
+// Minimum readiness thresholds per use case by dimension
+// Keys correspond to DIMENSIONS ids: data, tech, process, people, governance
+const USE_CASE_GROUPS = [
+  {
+    category: "Planning, Forecasting & Scenario Intelligence",
+    items: [
+      {
+        name: "Predictive Rolling Forecast Engine",
+        mins: { data: 3.5, tech: 3.0, process: 3.0, people: 3.0, governance: 2.0 },
+      },
+      {
+        name: "Real-time Scenario Simulation",
+        mins: { data: 4.0, tech: 3.5, process: 3.0, people: 3.0, governance: 3.0 },
+      },
+      {
+        name: "AI-generated Management Reporting",
+        mins: { data: 2.5, tech: 2.0, process: 2.5, people: 2.0, governance: 1.5 },
+      },
+      {
+        name: "Predictive Cash Flow Forecasting",
+        mins: { data: 3.5, tech: 3.0, process: 2.5, people: 2.5, governance: 2.0 },
+      },
+    ],
+  },
+  {
+    category: "Revenue & Margin Optimization",
+    items: [
+      {
+        name: "Automated Variance Driver Attribution",
+        mins: { data: 3.0, tech: 2.5, process: 3.0, people: 2.5, governance: 1.5 },
+      },
+      {
+        name: "Predictive AR Analytics & DSO Intelligence",
+        mins: { data: 3.0, tech: 2.5, process: 2.5, people: 2.0, governance: 2.0 },
+      },
+      {
+        name: "Predictive AP Analytics",
+        mins: { data: 2.5, tech: 2.5, process: 2.5, people: 2.0, governance: 1.5 },
+      },
+    ],
+  },
+  {
+    category: "Working Capital & Cash Optimization",
+    items: [
+      {
+        name: "Predictive Receivables & Collections",
+        mins: { data: 3.0, tech: 2.5, process: 2.5, people: 2.0, governance: 2.0 },
+      },
+      {
+        name: "Predictive Collections & Dunning",
+        mins: { data: 3.0, tech: 2.5, process: 2.0, people: 1.5, governance: 1.5 },
+      },
+      {
+        name: "Automated Cash Application",
+        mins: { data: 3.0, tech: 2.5, process: 2.0, people: 1.5, governance: 1.5 },
+      },
+      {
+        name: "AI-Powered Payment Optimization",
+        mins: { data: 3.0, tech: 3.0, process: 2.5, people: 2.0, governance: 2.5 },
+      },
+    ],
+  },
+  {
+    category: "Procure-to-Pay",
+    items: [
+      {
+        name: "Intelligent Document Processing",
+        mins: { data: 2.0, tech: 2.0, process: 2.5, people: 1.5, governance: 1.5 },
+      },
+      {
+        name: "AI Three-Way Matching & Exception Routing",
+        mins: { data: 3.0, tech: 2.5, process: 3.0, people: 2.0, governance: 2.0 },
+      },
+      {
+        name: "AI Approval Workflow Automation",
+        mins: { data: 2.0, tech: 2.0, process: 2.5, people: 2.0, governance: 1.5 },
+      },
+    ],
+  },
+  {
+    category: "Order-to-Cash",
+    items: [
+      {
+        name: "AI-Powered Credit Risk Scoring",
+        mins: { data: 3.5, tech: 3.0, process: 2.5, people: 3.0, governance: 4.0 },
+      },
+      {
+        name: "AI Dispute Detection & Resolution",
+        mins: { data: 3.0, tech: 2.5, process: 2.5, people: 2.5, governance: 3.0 },
+      },
+    ],
+  },
+  {
+    category: "Financial Closure & Consolidation",
+    items: [
+      {
+        name: "Automated Recurring Journal Generation",
+        mins: { data: 2.5, tech: 2.0, process: 3.0, people: 1.5, governance: 2.0 },
+      },
+      {
+        name: "Intelligent Intercompany Matching",
+        mins: { data: 3.5, tech: 3.0, process: 3.0, people: 2.0, governance: 2.5 },
+      },
+      {
+        name: "Smart Consolidation Package Validation",
+        mins: { data: 3.0, tech: 2.5, process: 3.5, people: 2.0, governance: 2.5 },
+      },
+      {
+        name: "Continuous GL Anomaly Detection",
+        mins: { data: 3.0, tech: 2.5, process: 2.5, people: 2.0, governance: 3.0 },
+      },
+      {
+        name: "Automated Accounting Estimate Validation",
+        mins: { data: 3.0, tech: 2.0, process: 2.5, people: 3.0, governance: 3.5 },
+      },
+    ],
+  },
+  {
+    category: "Treasury & Financial Risk Management",
+    items: [
+      {
+        name: "FX Hedging Execution Optimization",
+        mins: { data: 4.0, tech: 3.5, process: 3.0, people: 3.5, governance: 4.0 },
+      },
+      {
+        name: "Automated Bank Reconciliation",
+        mins: { data: 2.5, tech: 2.5, process: 2.0, people: 1.5, governance: 2.0 },
+      },
+    ],
+  },
+  {
+    category: "Fraud Detection",
+    items: [
+      {
+        name: "Real-Time Intelligent Fraud Detection",
+        mins: { data: 3.5, tech: 3.0, process: 2.5, people: 3.0, governance: 3.5 },
+      },
+      {
+        name: "Real-Time Duplicate Detection",
+        mins: { data: 2.5, tech: 2.0, process: 2.0, people: 1.5, governance: 2.0 },
+      },
+    ],
+  },
+  {
+    category: "Tax & Regulatory Intelligence",
+    items: [
+      {
+        name: "AI-powered VAT/GST Classification",
+        mins: { data: 3.0, tech: 2.5, process: 2.5, people: 2.0, governance: 3.0 },
+      },
+      {
+        name: "Ready-to-Review Corporate Tax Provision",
+        mins: { data: 3.0, tech: 2.5, process: 3.0, people: 2.5, governance: 3.0 },
+      },
+      {
+        name: "Automated Transfer Pricing Documentation",
+        mins: { data: 3.5, tech: 3.0, process: 3.0, people: 3.0, governance: 4.0 },
+      },
+      {
+        name: "Intelligent Tax Audit Defense & Risk Scoring",
+        mins: { data: 3.5, tech: 2.5, process: 2.5, people: 3.0, governance: 4.0 },
+      },
+      {
+        name: "Continuous Tax Compliance Monitoring",
+        mins: { data: 3.0, tech: 2.5, process: 2.5, people: 2.0, governance: 3.5 },
+      },
+    ],
+  },
+  {
+    category: "Compliance & Governance",
+    items: [
+      {
+        name: "Continuous Control Monitoring",
+        mins: { data: 3.0, tech: 2.5, process: 3.0, people: 2.5, governance: 3.5 },
+      },
+      {
+        name: "Automated Evidence Collection & Validation",
+        mins: { data: 2.5, tech: 2.5, process: 2.5, people: 2.0, governance: 3.0 },
+      },
+      {
+        name: "Enterprise Risk Monitoring & Scoring",
+        mins: { data: 3.5, tech: 3.0, process: 3.0, people: 3.0, governance: 4.0 },
+      },
+      {
+        name: "Automated Remediation Tracking",
+        mins: { data: 2.0, tech: 2.0, process: 2.5, people: 2.0, governance: 2.5 },
+      },
+      {
+        name: "Regulatory Change Intelligence",
+        mins: { data: 2.5, tech: 2.0, process: 2.0, people: 2.5, governance: 3.5 },
+      },
+    ],
+  },
+  {
+    category: "Payroll",
+    items: [
+      {
+        name: "Automated Payroll Validation",
+        mins: { data: 3.0, tech: 2.5, process: 3.0, people: 2.0, governance: 3.0 },
+      },
+      {
+        name: "Payroll Master Data Reconciliation",
+        mins: { data: 2.5, tech: 2.5, process: 2.0, people: 1.5, governance: 2.0 },
+      },
+      {
+        name: "Workforce & Payroll Forecasting",
+        mins: { data: 3.0, tech: 2.0, process: 2.5, people: 2.0, governance: 1.5 },
+      },
+    ],
+  },
+  {
+    category: "Strategic Investment & Capital Allocation",
+    items: [
+      {
+        name: "AI-Supported CapEx Risk Scoring",
+        mins: { data: 3.5, tech: 3.0, process: 3.0, people: 3.5, governance: 3.0 },
+      },
+    ],
+  },
+];
+
 const AUDIENCE_CFG = {
   finance: { label: "Finance", border: "#2E86C1", color: "#90CAF9", dot: "#2E86C1" },
   it: { label: "IT / Tech", border: "#27AE60", color: "#A9DFBF", dot: "#27AE60" },
@@ -481,6 +702,40 @@ const genId = () => Date.now().toString(36) + Math.random().toString(36).slice(2
 
 const fmtDate = (d) =>
   new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+
+// Classify a use case given organization scores and minimum thresholds
+const classifyUseCase = (orgScores, mins) => {
+  // Count dimensions where org score is below requirement
+  let below = 0;
+  DIMENSIONS.forEach((d) => {
+    const org = orgScores[d.id] || 0;
+    const req = mins[d.id] ?? 0;
+    if (org < req) below += 1;
+  });
+
+  if (below === 0) {
+    return {
+      label: "Ready to implement",
+      color: "#16a34a",
+      description:
+        "Organizational score meets or exceeds minimum requirements across all dimensions.",
+    };
+  }
+  if (below <= 2) {
+    return {
+      label: "Targeted investment needed",
+      color: "#f97316",
+      description:
+        "One or two dimensions fall below minimum requirements; address these before implementation.",
+    };
+  }
+  return {
+    label: "Significant gaps",
+    color: "#dc2626",
+    description:
+      "Multiple dimensions fall below minimum requirements; foundational work is needed first.",
+  };
+};
 
 function RadarChart({ scores, size = 260 }) {
   const cx = size / 2;
@@ -1362,7 +1617,9 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
   const [activeDim, setActiveDim] = useState(0);
   const [tab, setTab] = useState("assess");
   const [audienceFilter, setAudienceFilter] = useState("all");
+  const [selectedUseCaseKey, setSelectedUseCaseKey] = useState(null);
   const scores = assessment.scores;
+  const notes = assessment.notes || {};
   const dim = DIMENSIONS[activeDim];
 
   const setScore = (qid, val) => {
@@ -1372,6 +1629,15 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
     onUpdate({
       ...assessment,
       scores: s,
+      updatedAt: Date.now(),
+    });
+  };
+
+  const setNote = (qid, text) => {
+    const nextNotes = { ...notes, [qid]: text };
+    onUpdate({
+      ...assessment,
+      notes: nextNotes,
       updatedAt: Date.now(),
     });
   };
@@ -1398,6 +1664,37 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
     (a, d) => a + d.questions.filter((q) => scores[q.id]).length,
     0,
   );
+
+  // Flattened use cases with gap metrics to support "top 3 easiest" and details
+  const allUseCasesFlat = USE_CASE_GROUPS.flatMap((group) =>
+    group.items.map((uc) => {
+      let below = 0;
+      let gapSum = 0;
+      DIMENSIONS.forEach((d) => {
+        const org = allDimScores[d.id] || 0;
+        const req = uc.mins[d.id] ?? 0;
+        if (org < req) {
+          below += 1;
+          gapSum += req - org;
+        }
+      });
+      const cls = classifyUseCase(allDimScores, uc.mins);
+      return {
+        group: group.category,
+        name: uc.name,
+        mins: uc.mins,
+        classification: cls,
+        below,
+        gapSum,
+      };
+    }),
+  );
+
+  const topUseCases = [...allUseCasesFlat].sort((a, b) => {
+    if (a.below !== b.below) return a.below - b.below;
+    if (a.gapSum !== b.gapSum) return a.gapSum - b.gapSum;
+    return a.name.localeCompare(b.name);
+  }).slice(0, 3);
 
   const filteredQ = dim.questions.filter((q) => {
     if (audienceFilter === "all") return true;
@@ -1855,6 +2152,7 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
               <div style={{ flex: 1 }}>
                 {filteredQ.map((q, qi) => {
                   const ac = AUDIENCE_CFG[q.audience];
+                  const noteVal = notes[q.id] || "";
                   return (
                     <div
                       key={q.id}
@@ -2020,6 +2318,51 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                           </span>
                         )}
                       </div>
+                      <div
+                        style={{
+                          marginTop: 10,
+                          marginLeft: 34,
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 4,
+                        }}
+                      >
+                        <label
+                          style={{
+                            fontSize: 11,
+                            color: "#6b7280",
+                            fontWeight: 500,
+                          }}
+                        >
+                          Notes (optional)
+                        </label>
+                        <textarea
+                          value={noteVal}
+                          onChange={(e) => setNote(q.id, e.target.value)}
+                          placeholder="Capture key observations, quotes, or examples…"
+                          rows={2}
+                          style={{
+                            width: "100%",
+                            resize: "vertical",
+                            borderRadius: 8,
+                            border: "1px solid rgba(148,163,184,0.7)",
+                            padding: "8px 10px",
+                            fontSize: 12,
+                            fontFamily: "'DM Sans',sans-serif",
+                            color: "#111827",
+                            background: "#f9fafb",
+                            outline: "none",
+                          }}
+                          onFocus={(e) => {
+                            e.target.style.borderColor = "#2563eb";
+                            e.target.style.background = "#ffffff";
+                          }}
+                          onBlur={(e) => {
+                            e.target.style.borderColor = "rgba(148,163,184,0.7)";
+                            e.target.style.background = "#f9fafb";
+                          }}
+                        />
+                      </div>
                     </div>
                   );
                 })}
@@ -2160,7 +2503,7 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
           style={{
             flex: 1,
             overflowY: "auto",
-            padding: "32px 40px",
+            padding: "32px 40px 40px",
           }}
         >
           <div style={{ maxWidth: 840, margin: "0 auto" }}>
@@ -2258,7 +2601,7 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
               style={{
                 display: "flex",
                 gap: 22,
-                marginBottom: 24,
+                marginBottom: 20,
                 flexWrap: "wrap",
               }}
             >
@@ -2388,12 +2731,337 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
               </div>
             </div>
 
+            {/* Top 3 easiest use cases */}
+            <div
+              style={{
+                marginBottom: 24,
+                background: "#f9fafb",
+                border: "1px solid rgba(226,232,240,1)",
+                borderRadius: 10,
+                padding: "12px 14px",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 10,
+                  letterSpacing: 3,
+                  textTransform: "uppercase",
+                  color: "#9ca3af",
+                  marginBottom: 6,
+                  fontWeight: 700,
+                }}
+              >
+                Top 3 closest-fit use cases
+              </div>
+              <p
+                style={{
+                  fontSize: 12,
+                  color: "#6b7280",
+                  margin: "0 0 8px",
+                }}
+              >
+                Based on your current dimension scores, these use cases require the least uplift to
+                reach minimum readiness thresholds.
+              </p>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 4,
+                  fontSize: 12,
+                }}
+              >
+                {topUseCases.map((uc) => (
+                  <button
+                    key={`${uc.group}-${uc.name}`}
+                    type="button"
+                    onClick={() => {
+                      const key = `${uc.group}::${uc.name}`;
+                      setSelectedUseCaseKey((prev) => (prev === key ? null : key));
+                    }}
+                    style={{
+                      textAlign: "left",
+                      padding: "6px 8px",
+                      borderRadius: 8,
+                      border: "1px solid transparent",
+                      background: "transparent",
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: 8,
+                    }}
+                  >
+                    <span style={{ color: "#111827" }}>{uc.name}</span>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        borderRadius: 999,
+                        padding: "2px 8px",
+                        border: `1px solid ${uc.classification.color}`,
+                        color: uc.classification.color,
+                      }}
+                    >
+                      {uc.classification.label}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Use case readiness mapping */}
+            <div
+              style={{
+                marginBottom: 28,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 10,
+                  letterSpacing: 3,
+                  textTransform: "uppercase",
+                  color: "#9ca3af",
+                  marginBottom: 10,
+                  fontWeight: 700,
+                }}
+              >
+                Use-case readiness vs. minimum thresholds
+              </div>
+              <p
+                style={{
+                  fontSize: 12,
+                  color: "#6b7280",
+                  margin: "0 0 10px",
+                  lineHeight: 1.6,
+                }}
+              >
+                Each use case has a defined minimum readiness requirement per dimension. The
+                classification below shows where the organization is ready today and where gaps must
+                be closed before implementation.
+              </p>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 8,
+                  fontSize: 11,
+                  color: "#6b7280",
+                  marginBottom: 10,
+                  flexWrap: "wrap",
+                }}
+              >
+                <span>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: 10,
+                      height: 10,
+                      borderRadius: 999,
+                      background: "#16a34a",
+                      marginRight: 4,
+                    }}
+                  />
+                  Ready to implement
+                </span>
+                <span>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: 10,
+                      height: 10,
+                      borderRadius: 999,
+                      background: "#f97316",
+                      marginRight: 4,
+                    }}
+                  />
+                  Targeted investment needed
+                </span>
+                <span>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      width: 10,
+                      height: 10,
+                      borderRadius: 999,
+                      background: "#dc2626",
+                      marginRight: 4,
+                    }}
+                  />
+                  Significant gaps
+                </span>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                }}
+              >
+                {USE_CASE_GROUPS.map((group) => (
+                  <div
+                    key={group.category}
+                    style={{
+                      background: "#f9fafb",
+                      border: "1px solid rgba(226,232,240,1)",
+                      borderRadius: 10,
+                      padding: "10px 12px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: 11,
+                        textTransform: "uppercase",
+                        letterSpacing: 1.4,
+                        color: "#4b5563",
+                        marginBottom: 6,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {group.category}
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 4,
+                      }}
+                    >
+                      {group.items.map((uc) => {
+                        const cls = classifyUseCase(allDimScores, uc.mins);
+                        const key = `${group.category}::${uc.name}`;
+                        const isSelected = selectedUseCaseKey === key;
+                        return (
+                          <div key={uc.name}>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                gap: 8,
+                                padding: "5px 6px",
+                                borderTop: "1px solid rgba(226,232,240,0.9)",
+                                borderRadius: 8,
+                                background: isSelected
+                                  ? "rgba(219,234,254,0.8)"
+                                  : "transparent",
+                                cursor: "pointer",
+                              }}
+                              onClick={() =>
+                                setSelectedUseCaseKey((prev) => (prev === key ? null : key))
+                              }
+                            >
+                              <div
+                                style={{
+                                  fontSize: 12,
+                                  color: "#111827",
+                                  fontWeight: 500,
+                                  flex: 1,
+                                }}
+                              >
+                                {uc.name}
+                              </div>
+                              <div
+                                style={{
+                                  fontSize: 10,
+                                  borderRadius: 999,
+                                  padding: "3px 9px",
+                                  border: `1px solid ${cls.color}`,
+                                  color: cls.color,
+                                  whiteSpace: "nowrap",
+                                }}
+                              >
+                                {cls.label}
+                              </div>
+                            </div>
+                            {isSelected && (
+                              <div
+                                style={{
+                                  marginTop: 6,
+                                  marginBottom: 4,
+                                  padding: "6px 8px 8px",
+                                  borderRadius: 8,
+                                  background: "#f9fafb",
+                                  border: "1px solid rgba(226,232,240,1)",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    fontSize: 11,
+                                    color: "#6b7280",
+                                    marginBottom: 6,
+                                  }}
+                                >
+                                  {cls.description}
+                                </div>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexWrap: "wrap",
+                                    gap: 6,
+                                  }}
+                                >
+                                  {DIMENSIONS.map((d) => {
+                                    const org = allDimScores[d.id] || 0;
+                                    const req = uc.mins[d.id] ?? 0;
+                                    const meets = org >= req && req > 0;
+                                    return (
+                                      <div
+                                        key={d.id}
+                                        style={{
+                                          flex: "1 0 120px",
+                                          minWidth: 120,
+                                          borderRadius: 8,
+                                          border: "1px solid rgba(226,232,240,1)",
+                                          padding: "4px 6px",
+                                          background: meets ? "#ecfdf3" : "#fef2f2",
+                                        }}
+                                      >
+                                        <div
+                                          style={{
+                                            fontSize: 10,
+                                            fontWeight: 600,
+                                            color: "#111827",
+                                            marginBottom: 1,
+                                          }}
+                                        >
+                                          {d.short}
+                                        </div>
+                                        <div
+                                          style={{
+                                            fontSize: 10,
+                                            color: "#4b5563",
+                                          }}
+                                        >
+                                          Org:{" "}
+                                          <strong>
+                                            {org ? org.toFixed(1) : "—"}
+                                          </strong>{" "}
+                                          · Min:{" "}
+                                          <strong>
+                                            {req ? req.toFixed(1) : "—"}
+                                          </strong>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div
               style={{
                   background: "#ffffff",
                   border: "1px solid rgba(226,232,240,1)",
                 borderRadius: 12,
-                padding: "14px 18px",
+                padding: "14px 18px 18px",
               }}
             >
               <div
@@ -2518,6 +3186,7 @@ export default function Home() {
       consultantName,
       workshopDate,
       scores: {},
+      notes: {},
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
