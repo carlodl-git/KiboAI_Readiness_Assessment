@@ -737,7 +737,7 @@ const classifyUseCase = (orgScores, mins) => {
   };
 };
 
-function RadarChart({ scores, size = 260 }) {
+function RadarChart({ scores, compare, size = 260 }) {
   const cx = size / 2;
   const cy = size / 2;
   const r = size * 0.34;
@@ -749,8 +749,12 @@ function RadarChart({ scores, size = 260 }) {
   });
   const gridPts = (lv) => DIMENSIONS.map((_, i) => pt(i, lv / 5));
   const scorePts = DIMENSIONS.map((d, i) => pt(i, (scores[d.id] || 0) / 5));
+  const comparePts = compare
+    ? DIMENSIONS.map((d, i) => pt(i, (compare[d.id] || 0) / 5))
+    : null;
 
   return (
+    <div style={{ display: "inline-flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
     <svg
       viewBox={`0 0 ${size} ${size}`}
       style={{ width: "100%", maxWidth: size, overflow: "visible" }}
@@ -780,6 +784,16 @@ function RadarChart({ scores, size = 260 }) {
           />
         );
       })}
+      {comparePts && (
+        <polygon
+          points={comparePts
+            .map((p) => `${p.x},${p.y}`)
+            .join(" ")}
+          fill="rgba(148,163,184,0.16)"
+          stroke="#9ca3af"
+          strokeWidth="1"
+        />
+      )}
       <polygon
         points={scorePts
           .map((p) => `${p.x},${p.y}`)
@@ -788,21 +802,40 @@ function RadarChart({ scores, size = 260 }) {
         stroke="#2563eb"
         strokeWidth="1.5"
       />
-      {scorePts.map((p, i) => (
-        <circle
-          key={i}
-          cx={p.x}
-          cy={p.y}
-          r="4"
-          fill={DIMENSIONS[i].accent}
-          stroke="#ffffff"
-          strokeWidth="1.5"
-        />
-      ))}
+      {scorePts.map((p, i) => {
+        const dim = DIMENSIONS[i];
+        const org = scores[dim.id] || 0;
+        const min = compare ? (compare[dim.id] ?? 0) : 0;
+        const meets = !compare || org >= min;
+        const dotColor = compare
+          ? meets
+            ? "#16a34a"
+            : "#dc2626"
+          : dim.accent;
+        return (
+          <circle
+            key={i}
+            cx={p.x}
+            cy={p.y}
+            r="4"
+            fill={dotColor}
+            stroke="#ffffff"
+            strokeWidth="1.5"
+          />
+        );
+      })}
       {DIMENSIONS.map((d, i) => {
         const a = angle(i);
         const lx = cx + (r + 24) * Math.cos(a);
         const ly = cy + (r + 24) * Math.sin(a);
+        const org = scores[d.id] || 0;
+        const min = compare ? (compare[d.id] ?? 0) : 0;
+        const meets = !compare || org >= min;
+        const textColor = compare
+          ? meets
+            ? "#16a34a"
+            : "#dc2626"
+          : "#4b5563";
         return (
           <text
             key={i}
@@ -813,7 +846,7 @@ function RadarChart({ scores, size = 260 }) {
             style={{
               fontSize: 8,
               fontWeight: 700,
-              fill: "#4b5563",
+              fill: textColor,
               fontFamily: "DM Sans,sans-serif",
               letterSpacing: 0.3,
             }}
@@ -823,6 +856,13 @@ function RadarChart({ scores, size = 260 }) {
         );
       })}
     </svg>
+    {compare && (
+      <div style={{ display: "flex", gap: 12, fontSize: 9, fontWeight: 600 }}>
+        <span style={{ color: "#16a34a" }}>● Met</span>
+        <span style={{ color: "#dc2626" }}>● Gap</span>
+      </div>
+    )}
+    </div>
   );
 }
 
@@ -2771,41 +2811,145 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                   fontSize: 12,
                 }}
               >
-                {topUseCases.map((uc) => (
-                  <button
-                    key={`${uc.group}-${uc.name}`}
-                    type="button"
-                    onClick={() => {
-                      const key = `${uc.group}::${uc.name}`;
-                      setSelectedUseCaseKey((prev) => (prev === key ? null : key));
-                    }}
-                    style={{
-                      textAlign: "left",
-                      padding: "6px 8px",
-                      borderRadius: 8,
-                      border: "1px solid transparent",
-                      background: "transparent",
-                      cursor: "pointer",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      gap: 8,
-                    }}
-                  >
-                    <span style={{ color: "#111827" }}>{uc.name}</span>
-                    <span
-                      style={{
-                        fontSize: 10,
-                        borderRadius: 999,
-                        padding: "2px 8px",
-                        border: `1px solid ${uc.classification.color}`,
-                        color: uc.classification.color,
-                      }}
-                    >
-                      {uc.classification.label}
-                    </span>
-                  </button>
-                ))}
+                {topUseCases.map((uc) => {
+                  const key = `${uc.group}::${uc.name}`;
+                  const isSelected = selectedUseCaseKey === key;
+                  return (
+                    <div key={`${uc.group}-${uc.name}`}>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelectedUseCaseKey((prev) => (prev === key ? null : key))
+                        }
+                        style={{
+                          textAlign: "left",
+                          padding: "6px 8px",
+                          borderRadius: 8,
+                          border: isSelected
+                            ? "1px solid rgba(59,130,246,0.7)"
+                            : "1px solid transparent",
+                          background: isSelected ? "rgba(219,234,254,0.8)" : "transparent",
+                          cursor: "pointer",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          gap: 8,
+                          width: "100%",
+                        }}
+                      >
+                        <span style={{ color: "#111827" }}>{uc.name}</span>
+                        <span
+                          style={{
+                            fontSize: 10,
+                            borderRadius: 999,
+                            padding: "2px 8px",
+                            border: `1px solid ${uc.classification.color}`,
+                            color: uc.classification.color,
+                          }}
+                        >
+                          {uc.classification.label}
+                        </span>
+                      </button>
+                      {isSelected && (
+                        <div
+                          style={{
+                            marginTop: 4,
+                            marginBottom: 4,
+                            padding: "6px 8px 10px",
+                            borderRadius: 8,
+                            background: "#f9fafb",
+                            border: "1px solid rgba(226,232,240,1)",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              marginBottom: 6,
+                            }}
+                          >
+                            <RadarChart
+                              scores={allDimScores}
+                              compare={uc.mins}
+                              size={150}
+                            />
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 11,
+                              color: "#6b7280",
+                              marginBottom: 6,
+                            }}
+                          >
+                            {uc.classification.description}
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexWrap: "wrap",
+                              gap: 6,
+                            }}
+                          >
+                            {DIMENSIONS.map((d) => {
+                              const org = allDimScores[d.id] || 0;
+                              const req = uc.mins[d.id] ?? 0;
+                              const meets = org >= req && req > 0;
+                              const gap = !meets && req > 0 ? req - org : 0;
+                              return (
+                                <div
+                                  key={d.id}
+                                  style={{
+                                    flex: "1 0 120px",
+                                    minWidth: 120,
+                                    borderRadius: 8,
+                                    border: meets
+                                      ? "1px solid rgba(167,243,208,0.8)"
+                                      : "1px solid #f87171",
+                                    padding: "4px 6px",
+                                    background: meets ? "#ecfdf3" : "#fecaca",
+                                  }}
+                                >
+                                  <div
+                                    style={{
+                                      fontSize: 10,
+                                      fontWeight: 600,
+                                      color: meets ? "#111827" : "#991b1b",
+                                      marginBottom: 1,
+                                    }}
+                                  >
+                                    {d.short}
+                                  </div>
+                                  <div
+                                    style={{
+                                      fontSize: 10,
+                                      color: meets ? "#4b5563" : "#b91c1c",
+                                    }}
+                                  >
+                                    Org:{" "}
+                                    <strong>{org ? org.toFixed(1) : "—"}</strong>{" "}
+                                    · Min: <strong>{req ? req.toFixed(1) : "—"}</strong>
+                                  </div>
+                                  {!meets && gap > 0 && (
+                                    <div
+                                      style={{
+                                        fontSize: 9,
+                                        fontWeight: 700,
+                                        color: "#dc2626",
+                                        marginTop: 2,
+                                      }}
+                                    >
+                                      Gap: {gap.toFixed(1)}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -2986,6 +3130,19 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                               >
                                 <div
                                   style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    marginBottom: 6,
+                                  }}
+                                >
+                                  <RadarChart
+                                    scores={allDimScores}
+                                    compare={uc.mins}
+                                    size={150}
+                                  />
+                                </div>
+                                <div
+                                  style={{
                                     fontSize: 11,
                                     color: "#6b7280",
                                     marginBottom: 6,
@@ -3004,6 +3161,7 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                                     const org = allDimScores[d.id] || 0;
                                     const req = uc.mins[d.id] ?? 0;
                                     const meets = org >= req && req > 0;
+                                    const gap = !meets && req > 0 ? req - org : 0;
                                     return (
                                       <div
                                         key={d.id}
@@ -3011,16 +3169,18 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                                           flex: "1 0 120px",
                                           minWidth: 120,
                                           borderRadius: 8,
-                                          border: "1px solid rgba(226,232,240,1)",
+                                          border: meets
+                                            ? "1px solid rgba(167,243,208,0.8)"
+                                            : "1px solid #f87171",
                                           padding: "4px 6px",
-                                          background: meets ? "#ecfdf3" : "#fef2f2",
+                                          background: meets ? "#ecfdf3" : "#fecaca",
                                         }}
                                       >
                                         <div
                                           style={{
                                             fontSize: 10,
                                             fontWeight: 600,
-                                            color: "#111827",
+                                            color: meets ? "#111827" : "#991b1b",
                                             marginBottom: 1,
                                           }}
                                         >
@@ -3029,7 +3189,7 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                                         <div
                                           style={{
                                             fontSize: 10,
-                                            color: "#4b5563",
+                                            color: meets ? "#4b5563" : "#b91c1c",
                                           }}
                                         >
                                           Org:{" "}
@@ -3041,6 +3201,18 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                                             {req ? req.toFixed(1) : "—"}
                                           </strong>
                                         </div>
+                                        {!meets && gap > 0 && (
+                                          <div
+                                            style={{
+                                              fontSize: 9,
+                                              fontWeight: 700,
+                                              color: "#dc2626",
+                                              marginTop: 2,
+                                            }}
+                                          >
+                                            Gap: {gap.toFixed(1)}
+                                          </div>
+                                        )}
                                       </div>
                                     );
                                   })}
