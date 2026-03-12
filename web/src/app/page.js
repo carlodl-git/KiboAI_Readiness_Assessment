@@ -34,7 +34,7 @@ const DIMENSIONS = [
         id: "d2",
         audience: "finance",
         text:
-          "How would you rate the overall quality of financial data — in terms of accuracy, completeness, and consistency across entities?",
+          "How would you rate the overall quality of financial data, in terms of accuracy, completeness, and consistency across entities?",
         lookFor:
           "Documented quality standards enforced at source vs. ad-hoc corrections after errors surface",
       },
@@ -42,7 +42,7 @@ const DIMENSIONS = [
         id: "d3",
         audience: "both",
         text:
-          "To what extent is data integrated across ERPs, subledgers, and reporting tools — or does it remain siloed by entity, region, or function?",
+          "To what extent is data integrated across ERPs, subledgers, and reporting tools, or does it remain siloed by entity, region, or function?",
         lookFor:
           "Automated data flows with reconciled outputs vs. manual consolidation and re-keying between systems",
       },
@@ -50,7 +50,7 @@ const DIMENSIONS = [
         id: "d4",
         audience: "both",
         text:
-          "Is there a formal data governance structure in place — including defined data owners, access controls, master data standards, and lineage documentation?",
+          "Is there a formal data governance structure in place, including defined data owners, access controls, master data standards, and lineage documentation?",
         lookFor:
           "Assigned data stewards with documented accountability vs. unclear ownership and decentralised master data maintenance with frequent duplicates",
       },
@@ -58,7 +58,7 @@ const DIMENSIONS = [
         id: "d5",
         audience: "finance",
         text:
-          "How easily can finance teams access the data they need for analysis and reporting — without IT intervention or manual workarounds?",
+          "How easily can finance teams access the data they need for analysis and reporting, without IT intervention or manual workarounds?",
         lookFor:
           "Self-service dashboards and data access vs. ticket-based requests with multi-day turnaround",
       },
@@ -83,7 +83,7 @@ const DIMENSIONS = [
     vignettes: {
       l2: [
         "Finance data resides in multiple ERPs; consolidation requires manual extraction into Excel",
-        "Data quality issues are known but addressed reactively — no formal owner assigned",
+        "Data quality issues are known but addressed reactively; no formal owner assigned",
         "Teams spend significant time reconciling inconsistencies before each reporting cycle",
         "Unstructured documents are stored in shared drives with no indexing",
       ],
@@ -129,7 +129,7 @@ const DIMENSIONS = [
         id: "t3",
         audience: "both",
         text:
-          "How well are finance systems connected to each other — do they exchange data via APIs or require manual interfaces and file transfers?",
+          "How well are finance systems connected to each other, do they exchange data via APIs or require manual interfaces and file transfers?",
         lookFor:
           "Standardized API connectivity with documented interfaces vs. batch file transfers and manual uploads",
       },
@@ -137,7 +137,7 @@ const DIMENSIONS = [
         id: "t4",
         audience: "finance",
         text:
-          "Can the finance function access new digital tools quickly — or does every new solution require a lengthy IT procurement and approval cycle?",
+          "Can the finance function access new digital tools quickly, or does every new solution require a lengthy IT procurement and approval cycle?",
         lookFor:
           "Finance teams can pilot and deploy tools within weeks vs. new tools require months of IT evaluation before use",
         itNote:
@@ -155,7 +155,7 @@ const DIMENSIONS = [
         id: "t6",
         audience: "both",
         text:
-          "Does the organization already use AI, machine learning, or advanced automation tools within finance — and are these owned and governed by finance, IT, or both?",
+          "Does the organization already use AI, machine learning, or advanced automation tools within finance, and are these owned and governed by finance, IT, or both?",
         lookFor:
           "Finance-owned AI tools with clear governance vs. isolated IT-run pilots with no finance involvement, or shadow AI usage with no oversight",
       },
@@ -210,7 +210,7 @@ const DIMENSIONS = [
         id: "p2",
         audience: "finance",
         text:
-          "How much of the current finance workflow is manual vs. automated — including data entry, reconciliations, approvals, and report generation?",
+          "How much of the current finance workflow is manual vs. automated, including data entry, reconciliations, approvals, and report generation?",
         lookFor:
           "Integrated workflow automation across key steps vs. heavy reliance on email, Excel, and manual handoffs",
       },
@@ -218,7 +218,7 @@ const DIMENSIONS = [
         id: "p3",
         audience: "finance",
         text:
-          "How consistent is process execution across business units — do teams follow the same steps, timelines, and quality standards?",
+          "How consistent is process execution across business units, do teams follow the same steps, timelines, and quality standards?",
         lookFor:
           "Enforced SOPs with compliance monitoring vs. local variations and undocumented workarounds being the norm",
       },
@@ -234,7 +234,7 @@ const DIMENSIONS = [
         id: "p5",
         audience: "finance",
         text:
-          "Does the organization track process performance — such as cycle times, bottlenecks, and exception rates — through data or dashboards?",
+          "Does the organization track process performance, such as cycle times, bottlenecks, and exception rates, through data or dashboards?",
         lookFor:
           "Data-driven process monitoring with defined KPIs vs. anecdotal understanding of where delays occur based on individual experience",
       },
@@ -242,7 +242,7 @@ const DIMENSIONS = [
         id: "p6",
         audience: "finance",
         text:
-          "When was the last time core finance processes were formally reviewed and optimized — and is there a continuous improvement mechanism with clear ownership?",
+          "When was the last time core finance processes were formally reviewed and optimized, and is there a continuous improvement mechanism with clear ownership?",
         lookFor:
           "Regular process reviews with assigned owners and documented outcomes vs. processes essentially unchanged for years",
       },
@@ -250,7 +250,7 @@ const DIMENSIONS = [
         id: "p7",
         audience: "finance",
         text:
-          "When exceptions occur in finance processes, how are they documented, escalated, and resolved — consistently or left to individual judgment?",
+          "When exceptions occur in finance processes, how are they documented, escalated, and resolved, consistently or left to individual judgment?",
         lookFor:
           "Defined escalation paths with documented resolution and root cause tracking vs. exceptions resolved informally with no audit trail",
         isNew: true,
@@ -261,7 +261,7 @@ const DIMENSIONS = [
         "Month-end close follows a broadly similar pattern but each region has its own timeline and workarounds",
         "Process documentation exists for audit purposes but is rarely updated or followed",
         "Reconciliations are largely manual; exception handling depends on individual experience",
-        "No data-driven tracking of process cycle times — issues are identified informally",
+        "No data-driven tracking of process cycle times; issues are identified informally",
       ],
       l3: [
         "Core processes are documented and largely followed; some automation exists for high-volume tasks",
@@ -289,7 +289,7 @@ const DIMENSIONS = [
         id: "ps1",
         audience: "finance",
         text:
-          "How would you describe AI awareness and understanding among finance leadership — CFO, controllers, FP&A heads, and senior managers?",
+          "How would you describe AI awareness and understanding among finance leadership: CFO, controllers, FP&A heads, and senior managers?",
         lookFor:
           "Leadership that can articulate AI opportunities and risks in finance vs. awareness limited to headlines and buzzwords",
       },
@@ -297,7 +297,7 @@ const DIMENSIONS = [
         id: "ps2",
         audience: "finance",
         text:
-          "How would you describe AI awareness and understanding among operational finance staff — analysts, accountants, and reporting teams?",
+          "How would you describe AI awareness and understanding among operational finance staff: analysts, accountants, and reporting teams?",
         lookFor:
           "Staff who understand how AI could affect their day-to-day work vs. broad uncertainty or indifference about AI's practical relevance",
         isNew: true,
@@ -306,7 +306,7 @@ const DIMENSIONS = [
         id: "ps3",
         audience: "finance",
         text:
-          "Is there active executive sponsorship for AI in finance — and if so, at what level and with what level of committed budget or resource?",
+          "Is there active executive sponsorship for AI in finance, and if so, at what level and with what level of committed budget or resource?",
         lookFor:
           "Named sponsor with allocated budget and regular reviews vs. general interest expressed without ownership",
       },
@@ -314,7 +314,7 @@ const DIMENSIONS = [
         id: "ps4",
         audience: "both",
         text:
-          "Does the organization have access to AI or data science talent — either within finance, through a central team, or via external partners?",
+          "Does the organization have access to AI or data science talent, either within finance, through a central team, or via external partners?",
         lookFor:
           "Dedicated AI resources with finance domain knowledge vs. no technical AI access and no plan to build or buy it",
       },
@@ -322,7 +322,7 @@ const DIMENSIONS = [
         id: "ps5",
         audience: "finance",
         text:
-          "How would you describe the finance team's general attitude toward AI — is it seen as an opportunity, a threat, or largely irrelevant?",
+          "How would you describe the finance team's general attitude toward AI, is it seen as an opportunity, a threat, or largely irrelevant?",
         lookFor:
           "Curiosity and willingness to experiment vs. skepticism, fear, or indifference acting as a barrier",
       },
@@ -330,7 +330,7 @@ const DIMENSIONS = [
         id: "ps6",
         audience: "finance",
         text:
-          "Has the organization successfully managed technology-driven change in finance before — such as ERP migrations, RPA rollouts, or shared service transitions?",
+          "Has the organization successfully managed technology-driven change in finance before, such as ERP migrations, RPA rollouts, or shared service transitions?",
         lookFor:
           "Proven change track record with structured methodology vs. history of stalled transformations or significant resistance",
       },
@@ -338,7 +338,7 @@ const DIMENSIONS = [
         id: "ps7",
         audience: "both",
         text:
-          "Are there mechanisms to upskill finance staff on AI tools and data literacy — and does the organization have the L&D infrastructure to scale this across the function?",
+          "Are there mechanisms to upskill finance staff on AI tools and data literacy, and does the organization have the L&D infrastructure to scale this across the function?",
         lookFor:
           "Ongoing role-specific learning programmes with L&D infrastructure to scale vs. one-off training sessions with no follow-through",
       },
@@ -376,7 +376,7 @@ const DIMENSIONS = [
         id: "g1",
         audience: "finance",
         text:
-          "Does the organization have a formal AI governance policy — covering ethical use, accountability, and decision-making authority for AI initiatives in finance?",
+          "Does the organization have a formal AI governance policy, covering ethical use, accountability, and decision-making authority for AI initiatives in finance?",
         lookFor:
           "Documented AI policy with defined scope and enforcement vs. no formal guidelines; finance teams using AI tools without organisational guardrails",
       },
@@ -384,7 +384,7 @@ const DIMENSIONS = [
         id: "g2",
         audience: "finance",
         text:
-          "How well does the organization understand the regulatory landscape for AI in finance — including the EU AI Act, GDPR implications, and obligations when using third-party AI vendors?",
+          "How well does the organization understand the regulatory landscape for AI in finance, including the EU AI Act, GDPR implications, and obligations when using third-party AI vendors?",
         lookFor:
           "Mapped regulatory requirements per jurisdiction, including vendor contract review vs. general awareness without concrete assessment",
       },
@@ -392,7 +392,7 @@ const DIMENSIONS = [
         id: "g3",
         audience: "finance",
         text:
-          "Are there established processes to ensure AI outputs are explainable and auditable — particularly for decisions affecting financial reporting, controls, or compliance?",
+          "Are there established processes to ensure AI outputs are explainable and auditable, particularly for decisions affecting financial reporting, controls, or compliance?",
         lookFor:
           "Defined explainability standards with audit trails vs. black-box tolerance where AI outputs are accepted without documentation",
       },
@@ -400,7 +400,7 @@ const DIMENSIONS = [
         id: "g4",
         audience: "finance",
         text:
-          "Has your external auditor or internal audit function been briefed on — or formally reviewed — how the organization uses AI in financial processes?",
+          "Has your external auditor or internal audit function been briefed on, or formally reviewed, how the organization uses AI in financial processes?",
         lookFor:
           "Auditors engaged and informed, with AI use cases documented in the audit scope vs. auditors not consulted and AI use not reflected in control frameworks",
         isNew: true,
@@ -409,7 +409,7 @@ const DIMENSIONS = [
         id: "g5",
         audience: "both",
         text:
-          "Does the organization have a framework for assessing and mitigating AI-specific risks — such as model bias, hallucinations, data privacy breaches, or model drift — beyond general IT risk management?",
+          "Does the organization have a framework for assessing and mitigating AI-specific risks, such as model bias, hallucinations, data privacy breaches, or model drift, beyond general IT risk management?",
         lookFor:
           "Formal AI risk framework with specific controls vs. AI risks treated under general IT risk with no differentiated assessment",
       },
@@ -417,7 +417,7 @@ const DIMENSIONS = [
         id: "g6",
         audience: "both",
         text:
-          "Is there a defined process for monitoring AI model performance over time — including triggers for revalidation or retirement when accuracy or reliability degrades?",
+          "Is there a defined process for monitoring AI model performance over time, including triggers for revalidation or retirement when accuracy or reliability degrades?",
         lookFor:
           "Continuous model monitoring with defined performance thresholds and revalidation protocols vs. deploy-and-forget approach",
       },
@@ -425,7 +425,7 @@ const DIMENSIONS = [
         id: "g7",
         audience: "finance",
         text:
-          "Has the organization assigned clear ownership and accountability for AI governance — such as a responsible AI lead, an AI ethics committee, or cross-functional oversight?",
+          "Has the organization assigned clear ownership and accountability for AI governance, such as a responsible AI lead, an AI ethics committee, or cross-functional oversight?",
         lookFor:
           "Named accountability with regular governance reviews vs. governance responsibility undefined or assumed to sit with IT by default",
       },
@@ -681,7 +681,7 @@ const AUDIENCE_CFG = {
 };
 
 const maturityLabel = (s) => {
-  if (!s) return "—";
+  if (!s) return "Not rated";
   if (s < 1.5) return "Ad-hoc";
   if (s < 2.5) return "Emerging";
   if (s < 3.5) return "Defined";
@@ -980,7 +980,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                 }}
               >
                 A structured diagnostic for evaluating a client organization's
-                readiness to adopt and scale AI within the finance function —
+                readiness to adopt and scale AI within the finance function,
                 covering five dimensions across {totalQ} assessment questions.
               </p>
               <div
@@ -1076,7 +1076,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                 fontWeight: 700,
               }}
             >
-              Saved Assessments — {sorted.length}
+              Saved Assessments: {sorted.length}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {sorted.map((a) => {
@@ -1238,7 +1238,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                                   fontWeight: 700,
                                 }}
                               >
-                                {s ? s.toFixed(1) : "—"}
+                                {s ? s.toFixed(1) : "N/A"}
                               </div>
                             </div>
                           );
@@ -1275,7 +1275,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                               color: "rgba(255,255,255,0.2)",
                             }}
                           >
-                            —
+                            N/A
                           </div>
                         )}
                       </div>
@@ -1819,7 +1819,7 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
     return (
       <button
         onClick={() => setScore(qid, val)}
-        title={`${val} — ${labs[val - 1]}`}
+        title={`${val}: ${labs[val - 1]}`}
         style={{
           width: 38,
           height: 38,
@@ -3091,8 +3091,8 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                                     }}
                                   >
                                     Org:{" "}
-                                    <strong>{org ? org.toFixed(1) : "—"}</strong>{" "}
-                                    · Min: <strong>{req ? req.toFixed(1) : "—"}</strong>
+                                    <strong>{org ? org.toFixed(1) : "N/A"}</strong>{" "}
+                                    · Min: <strong>{req ? req.toFixed(1) : "N/A"}</strong>
                                   </div>
                                   {!meets && gap > 0 && (
                                     <div
@@ -3359,11 +3359,11 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                                         >
                                           Org:{" "}
                                           <strong>
-                                            {org ? org.toFixed(1) : "—"}
+                                            {org ? org.toFixed(1) : "N/A"}
                                           </strong>{" "}
                                           · Min:{" "}
                                           <strong>
-                                            {req ? req.toFixed(1) : "—"}
+                                            {req ? req.toFixed(1) : "N/A"}
                                           </strong>
                                         </div>
                                         {!meets && gap > 0 && (
