@@ -74,6 +74,13 @@ const DIMENSIONS = [
         id: "d7",
         audience: "both",
         text:
+          "Where is finance data primarily hosted – in cloud-based solutions, on-premise servers, or a hybrid setup – and how does this affect cross-system data accessibility?",
+        lookFor: "Cloud platform with cross-system access vs. isolated local data",
+      },
+      {
+        id: "d8",
+        audience: "both",
+        text:
           "Does the organization have access to unstructured financial data (e.g., contracts, invoices, emails, narrative reports), and is it stored in a way that allows retrieval or analysis?",
         lookFor:
           "Indexed, searchable unstructured data in accessible repositories vs. files stored in local drives or inboxes with no retrieval mechanism",
@@ -155,12 +162,20 @@ const DIMENSIONS = [
         id: "t6",
         audience: "both",
         text:
-          "Does the organization already use AI, machine learning, or advanced automation tools within finance, and are these owned and governed by finance, IT, or both?",
+          "Does the finance function currently use robotic process automation (RPA) or rule-based automation – and if so, how mature and widespread is the deployment?",
         lookFor:
-          "Finance-owned AI tools with clear governance vs. isolated IT-run pilots with no finance involvement, or shadow AI usage with no oversight",
+          "scaled RPA across multiple processes vs. isolated bots or no automation",
       },
       {
         id: "t7",
+        audience: "both",
+        text:
+          "Beyond RPA, has the organization piloted or deployed any AI or machine learning tools within finance – e.g., predictive analytics, NLP, or intelligent document processing?",
+        lookFor:
+          "active AI pilots or production use vs. no AI tooling beyond basic automation",
+      },
+      {
+        id: "t8",
         audience: "it",
         text:
           "Once an AI model or automated tool is deployed, is there a mechanism to monitor its performance, retrain it when needed, and retire it if accuracy degrades?",
@@ -342,6 +357,14 @@ const DIMENSIONS = [
         lookFor:
           "Ongoing role-specific learning programmes with L&D infrastructure to scale vs. one-off training sessions with no follow-through",
       },
+      {
+        id: "ps8",
+        audience: "finance",
+        text:
+          "Does the finance team have experience building business cases for technology investments - including defining KPIs, estimating ROI, and securing budget approval?",
+        lookFor:
+          "proven business case track record vs. no structured investment justification process",
+      },
     ],
     vignettes: {
       l2: [
@@ -384,9 +407,17 @@ const DIMENSIONS = [
         id: "g2",
         audience: "finance",
         text:
-          "How well does the organization understand the regulatory landscape for AI in finance, including the EU AI Act, GDPR implications, and obligations when using third-party AI vendors?",
+          "How well does the organization understand the implications of the EU AI Act for its finance-related AI use cases (regarding high-risk classification, transparency, human oversight)?",
         lookFor:
-          "Mapped regulatory requirements per jurisdiction, including vendor contract review vs. general awareness without concrete assessment",
+          "mapped AI Act requirements per use case vs. general awareness only",
+      },
+      {
+        id: "g2b",
+        audience: "both",
+        text:
+          "How prepared is the organization to handle GDPR and data privacy requirements when deploying AI in finance (regarding personal data processing and data subject rights?)",
+        lookFor:
+          "AI-specific data privacy assessment completed vs. reliance on general GDPR compliance",
       },
       {
         id: "g3",
@@ -682,11 +713,11 @@ const AUDIENCE_CFG = {
 
 const maturityLabel = (s) => {
   if (!s) return "Not rated";
-  if (s < 1.5) return "Ad-hoc";
+  if (s < 1.5) return "Beginner";
   if (s < 2.5) return "Emerging";
   if (s < 3.5) return "Defined";
   if (s < 4.5) return "Advanced";
-  return "AI-Optimized";
+  return "Expert";
 };
 
 const maturityColor = (s) => {
@@ -1815,7 +1846,7 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
   const ScoreBtn = ({ qid, val }) => {
     const sel = scores[qid] === val;
     const cols = ["#ef4444", "#f97316", "#eab308", "#22c55e", "#14b8a6"];
-    const labs = ["Ad-hoc", "Emerging", "Defined", "Advanced", "Optimized"];
+    const labs = ["Beginner", "Emerging", "Defined", "Advanced", "Expert"];
     return (
       <button
         onClick={() => setScore(qid, val)}
@@ -3417,7 +3448,7 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                 {[
                   {
                     s: 1,
-                    l: "Ad-hoc",
+                    l: "Beginner",
                     d: "Unstructured, reactive",
                     c: "#e74c3c",
                   },
@@ -3441,7 +3472,7 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                   },
                   {
                     s: 5,
-                    l: "AI-Optimized",
+                    l: "Expert",
                     d: "AI-native, continuously scaling",
                     c: "#16a085",
                   },
