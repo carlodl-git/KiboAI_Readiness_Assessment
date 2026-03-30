@@ -3546,6 +3546,54 @@ export default function Home() {
   const [assessments, setAssessments] = useState([]);
   const [activeId, setActiveId] = useState(null);
   const [showNew, setShowNew] = useState(false);
+  const [clientId, setClientId] = useState(null);
+  const saveTimersRef = useRef({});
+
+  useEffect(() => {
+    try {
+      const key = "kibo_ai_readiness_client_id";
+      let id = window.localStorage.getItem(key);
+      if (!id) {
+        id = genId();
+        window.localStorage.setItem(key, id);
+      }
+      setClientId(id);
+    } catch {
+      // If localStorage is unavailable, we'll still function but won't persist reliably.
+      setClientId(genId());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!clientId) return;
+    (async () => {
+      try {
+        const r = await fetch(`/api/assessments?clientId=${encodeURIComponent(clientId)}`);
+        if (!r.ok) return;
+        const data = await r.json();
+        if (Array.isArray(data?.assessments)) setAssessments(data.assessments);
+      } catch {
+        // ignore: offline/dev without env configured
+      }
+    })();
+  }, [clientId]);
+
+  const queueSave = (assessment) => {
+    if (!clientId || !assessment?.id) return;
+    const existing = saveTimersRef.current[assessment.id];
+    if (existing) window.clearTimeout(existing);
+    saveTimersRef.current[assessment.id] = window.setTimeout(async () => {
+      try {
+        await fetch("/api/assessments", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ clientId, assessment }),
+        });
+      } catch {
+        // ignore
+      }
+    }, 400);
+  };
 
   const handleCreate = ({ companyName, consultantName, workshopDate }) => {
     const a = {
@@ -3562,17 +3610,31 @@ export default function Home() {
     setAssessments(updated);
     setActiveId(a.id);
     setShowNew(false);
+    queueSave(a);
   };
 
   const handleUpdate = (updated) => {
     const list = assessments.map((a) => (a.id === updated.id ? updated : a));
     setAssessments(list);
+    queueSave(updated);
   };
 
   const handleDelete = (id) => {
     const list = assessments.filter((a) => a.id !== id);
     setAssessments(list);
     if (activeId === id) setActiveId(null);
+    if (clientId) {
+      (async () => {
+        try {
+          await fetch(
+            `/api/assessments/${encodeURIComponent(id)}?clientId=${encodeURIComponent(clientId)}`,
+            { method: "DELETE" },
+          );
+        } catch {
+          // ignore
+        }
+      })();
+    }
   };
 
   const active = assessments.find((a) => a.id === activeId);
