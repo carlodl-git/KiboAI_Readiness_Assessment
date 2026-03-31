@@ -734,6 +734,63 @@ const genId = () => Date.now().toString(36) + Math.random().toString(36).slice(2
 const fmtDate = (d) =>
   new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
+const EXAMPLE_ASSESSMENT_ID = "example-assessment";
+
+const buildExampleAssessment = () => {
+  // Curated example answers + notes to demonstrate the UI on first open.
+  // Scores are 1–5 and intentionally mixed to create a realistic readiness profile.
+  const scores = {
+    // Data
+    d1: 3, d2: 3, d3: 2, d4: 2, d5: 3, d6: 2, d7: 3, d8: 2,
+    // Technology
+    t1: 2, t2: 3, t3: 2, t4: 3, t5: 2, t6: 3, t7: 2, t8: 2,
+    // Process
+    p1: 3, p2: 2, p3: 3, p4: 2, p5: 2, p6: 3, p7: 2,
+    // People & Skills
+    ps1: 3, ps2: 2, ps3: 3, ps4: 2, ps5: 3, ps6: 3, ps7: 2, ps8: 3,
+    // Governance
+    g1: 2, g2: 2, g2b: 2, g3: 2, g4: 1, g5: 2, g6: 2, g7: 2,
+  };
+
+  const notes = {
+    d1: "Multiple ERPs; corporate finance pulls month-end into Excel for consolidation.",
+    d3: "Key systems are siloed by region; reconciliations often require re-keying.",
+    d4: "Data ownership exists informally; no end-to-end lineage for management reporting.",
+    d8: "Invoices/contracts live in shared drives; limited indexing and retrieval.",
+
+    t2: "Hybrid: core ERP cloud, but subledgers and reporting still partly on-prem.",
+    t3: "APIs exist for a few integrations; otherwise batch files + manual uploads.",
+    t7: "A couple of vendor AI features in AP, but no in-house pilots yet.",
+    t8: "No model monitoring process; would rely on vendors for performance signals.",
+
+    p2: "Close is partially automated but heavy manual reconciliations remain.",
+    p5: "Few consistent KPIs for close cycle time or exception rates across entities.",
+    p7: "Exceptions are handled ad-hoc; limited root cause tracking across teams.",
+
+    ps1: "CFO is supportive but expects a clear ROI case and risk framing.",
+    ps2: "Analysts are curious but uneven AI literacy; early training needed.",
+    ps4: "Central data team is small; finance has no dedicated DS/ML capacity.",
+    ps7: "Learning exists but not role-based; no structured AI upskilling pathway.",
+
+    g1: "General IT policies exist; AI-specific guardrails and approvals are missing.",
+    g2: "EU AI Act awareness is early; no mapping of use cases to obligations yet.",
+    g4: "Audit hasn’t reviewed AI usage; controls framework doesn’t mention AI.",
+    g6: "Limited guidance on explainability/audit trails for AI-assisted reporting.",
+  };
+
+  const now = Date.now();
+  return {
+    id: EXAMPLE_ASSESSMENT_ID,
+    companyName: "Example Co. (Demo)",
+    consultantName: "Kibo AI",
+    workshopDate: new Date(now).toISOString().slice(0, 10),
+    scores,
+    notes,
+    createdAt: now - 1000 * 60 * 60 * 24 * 7,
+    updatedAt: now - 1000 * 60 * 30,
+  };
+};
+
 // Classify a use case given organization scores and minimum thresholds
 const classifyUseCase = (orgScores, mins) => {
   // Count dimensions where org score is below requirement
@@ -1085,13 +1142,13 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
               style={{
                 fontFamily: "'Playfair Display',serif",
                 fontSize: 20,
-                color: "#f5f0e8",
+                color: "#0f172a",
                 marginBottom: 8,
               }}
             >
               No assessments yet
             </div>
-            <div style={{ fontSize: 13, color: "rgba(226,232,240,0.5)" }}>
+            <div style={{ fontSize: 13, color: "rgba(15,23,42,0.65)" }}>
               Create your first assessment to get started
             </div>
           </div>
@@ -1102,7 +1159,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                 fontSize: 10,
                 letterSpacing: 3,
                 textTransform: "uppercase",
-                color: "rgba(255,255,255,0.25)",
+                color: "rgba(15,23,42,0.6)",
                 marginBottom: 18,
                 fontWeight: 700,
               }}
@@ -1135,20 +1192,21 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                   <div
                     key={a.id}
                     style={{
-                      background: "rgba(255,255,255,0.025)",
-                      border: "1px solid rgba(255,255,255,0.07)",
+                      background: "rgba(255,255,255,0.92)",
+                      border: "1px solid rgba(15,23,42,0.12)",
                       borderRadius: 12,
                       overflow: "hidden",
                       transition: "border-color 0.2s",
                       cursor: "pointer",
+                      boxShadow: "0 10px 32px rgba(15,23,42,0.06)",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.borderColor =
-                        "rgba(201,162,39,0.35)";
+                        "rgba(37,99,235,0.35)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.borderColor =
-                        "rgba(255,255,255,0.07)";
+                        "rgba(15,23,42,0.12)";
                     }}
                     onClick={() => onOpen(a.id)}
                   >
@@ -1176,7 +1234,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                               fontFamily: "'Playfair Display',serif",
                               fontSize: 19,
                               fontWeight: 700,
-                              color: "#f5f0e8",
+                              color: "#0f172a",
                             }}
                           >
                             {a.companyName}
@@ -1204,7 +1262,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                         <div
                           style={{
                             fontSize: 11,
-                            color: "rgba(226,232,240,0.35)",
+                            color: "rgba(15,23,42,0.6)",
                           }}
                         >
                           {a.consultantName && (
@@ -1242,7 +1300,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                                   width: 6,
                                   height: 32,
                                   borderRadius: 3,
-                                  background: "rgba(255,255,255,0.07)",
+                                  background: "rgba(15,23,42,0.08)",
                                   overflow: "hidden",
                                   position: "relative",
                                 }}
@@ -1265,7 +1323,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                                   fontSize: 8,
                                   color: s
                                     ? d.accent
-                                    : "rgba(255,255,255,0.15)",
+                                    : "rgba(15,23,42,0.35)",
                                   fontWeight: 700,
                                 }}
                               >
@@ -1292,7 +1350,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                             <div
                               style={{
                                 fontSize: 9,
-                                color: "rgba(255,255,255,0.3)",
+                                color: "rgba(15,23,42,0.55)",
                                 marginTop: 2,
                               }}
                             >
@@ -1303,7 +1361,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                           <div
                             style={{
                               fontSize: 11,
-                              color: "rgba(255,255,255,0.2)",
+                              color: "rgba(15,23,42,0.5)",
                             }}
                           >
                             N/A
@@ -1314,7 +1372,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                         <div
                           style={{
                             fontSize: 10,
-                            color: "rgba(255,255,255,0.25)",
+                            color: "rgba(15,23,42,0.6)",
                             marginBottom: 4,
                             textAlign: "right",
                           }}
@@ -1324,7 +1382,7 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                         <div
                           style={{
                             height: 3,
-                            background: "rgba(255,255,255,0.07)",
+                            background: "rgba(15,23,42,0.1)",
                             borderRadius: 2,
                             overflow: "hidden",
                             width: 90,
@@ -3543,8 +3601,8 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
 }
 
 export default function Home() {
-  const [assessments, setAssessments] = useState([]);
-  const [activeId, setActiveId] = useState(null);
+  const [assessments, setAssessments] = useState(() => [buildExampleAssessment()]);
+  const [activeId, setActiveId] = useState(EXAMPLE_ASSESSMENT_ID);
   const [showNew, setShowNew] = useState(false);
 
   const handleCreate = ({ companyName, consultantName, workshopDate }) => {
