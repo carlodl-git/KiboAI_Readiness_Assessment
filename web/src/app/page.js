@@ -743,9 +743,9 @@ const buildExampleAssessment = () => {
     // Data
     d1: 3, d2: 3, d3: 2, d4: 2, d5: 3, d6: 2, d7: 3, d8: 2,
     // Technology
-    t1: 2, t2: 3, t3: 2, t4: 3, t5: 2, t6: 3, t7: 2, t8: 2,
+    t1: 4, t2: 3, t3: 2, t4: 3, t5: 2, t6: 3, t7: 2, t8: 2,
     // Process
-    p1: 3, p2: 2, p3: 3, p4: 2, p5: 2, p6: 3, p7: 2,
+    p1: 3, p2: 3, p3: 3, p4: 2, p5: 2, p6: 3, p7: 2,
     // People & Skills
     ps1: 3, ps2: 2, ps3: 3, ps4: 2, ps5: 3, ps6: 3, ps7: 2, ps8: 3,
     // Governance
@@ -3602,7 +3602,7 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
 
 export default function Home() {
   const [assessments, setAssessments] = useState(() => [buildExampleAssessment()]);
-  const [activeId, setActiveId] = useState(EXAMPLE_ASSESSMENT_ID);
+  const [activeId, setActiveId] = useState(null);
   const [showNew, setShowNew] = useState(false);
 
   const handleCreate = ({ companyName, consultantName, workshopDate }) => {
