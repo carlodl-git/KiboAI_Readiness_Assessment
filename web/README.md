@@ -18,15 +18,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-## Supabase persistence (no login)
-
-Assessments are persisted in Supabase and shown on the landing page. There is **no login** at this stage; the app generates an anonymous `clientId` in localStorage and scopes reads/writes to that id.
-
-- Database setup: run the SQL in `supabase/assessments.sql` in your Supabase project.
-- Server env vars:
-  - `SUPABASE_URL`
-  - `SUPABASE_SERVICE_ROLE_KEY`
-
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
