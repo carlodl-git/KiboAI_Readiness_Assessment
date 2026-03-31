@@ -22,7 +22,8 @@ const DIMENSIONS = [
       {id:"d4",audience:"both",text:"Is there a formal data governance structure in place, including defined data owners, access controls, master data standards, and lineage documentation?",lookFor:"Assigned data stewards with documented accountability vs. unclear ownership and decentralised master data maintenance with frequent duplicates"},
       {id:"d5",audience:"finance",text:"How easily can finance teams access the data they need for analysis and reporting, without IT intervention or manual workarounds?",lookFor:"Self-service dashboards and data access vs. ticket-based requests with multi-day turnaround"},
       {id:"d6",audience:"both",text:"Are there processes to continuously monitor data quality, flag anomalies, and remediate issues proactively?",lookFor:"Automated monitoring with alerts vs. data quality issues discovered only during month-end close"},
-      {id:"d7",audience:"both",text:"Does the organization have access to unstructured financial data (e.g., contracts, invoices, emails, narrative reports), and is it stored in a way that allows retrieval or analysis?",lookFor:"Indexed, searchable unstructured data in accessible repositories vs. files stored in local drives or inboxes with no retrieval mechanism",isNew:true},
+      {id:"d7",audience:"both",text:"Where is finance data primarily hosted – in cloud-based solutions, on-premise servers, or a hybrid setup – and how does this affect cross-system data accessibility?",lookFor:"Cloud platform with cross-system access vs. isolated local data"},
+      {id:"d8",audience:"both",text:"Does the organization have access to unstructured financial data (e.g., contracts, invoices, emails, narrative reports), and is it stored in a way that allows retrieval or analysis?",lookFor:"Indexed, searchable unstructured data in accessible repositories vs. files stored in local drives or inboxes with no retrieval mechanism",isNew:true},
     ],
     vignettes:{
       l2:["Finance data resides in multiple ERPs; consolidation requires manual extraction into Excel","Data quality issues are known but addressed reactively; no formal owner assigned","Teams spend significant time reconciling inconsistencies before each reporting cycle","Unstructured documents are stored in shared drives with no indexing"],
@@ -40,8 +41,9 @@ const DIMENSIONS = [
       {id:"t3",audience:"both",text:"How well are finance systems connected to each other, do they exchange data via APIs or require manual interfaces and file transfers?",lookFor:"Standardized API connectivity with documented interfaces vs. batch file transfers and manual uploads"},
       {id:"t4",audience:"finance",text:"Can the finance function access new digital tools quickly, or does every new solution require a lengthy IT procurement and approval cycle?",lookFor:"Finance teams can pilot and deploy tools within weeks vs. new tools require months of IT evaluation before use",itNote:"If IT is present: also explore whether the infrastructure supports elastic compute for data-intensive workloads."},
       {id:"t5",audience:"both",text:"How dependent is the finance function on a single technology vendor, and how flexible is the architecture to incorporate new tools or switch providers?",lookFor:"Modular, vendor-agnostic architecture vs. deep lock-in to one ecosystem with high switching costs"},
-      {id:"t6",audience:"both",text:"Does the organization already use AI, machine learning, or advanced automation tools within finance, and are these owned and governed by finance, IT, or both?",lookFor:"Finance-owned AI tools with clear governance vs. isolated IT-run pilots with no finance involvement, or shadow AI usage with no oversight"},
-      {id:"t7",audience:"it",text:"Once an AI model or automated tool is deployed, is there a mechanism to monitor its performance, retrain it when needed, and retire it if accuracy degrades?",lookFor:"Defined model lifecycle management with monitoring thresholds vs. deploy-and-forget approach with no performance tracking after go-live",isNew:true},
+      {id:"t6",audience:"both",text:"Does the finance function currently use robotic process automation (RPA) or rule-based automation – and if so, how mature and widespread is the deployment?",lookFor:"scaled RPA across multiple processes vs. isolated bots or no automation"},
+      {id:"t7",audience:"both",text:"Beyond RPA, has the organization piloted or deployed any AI or machine learning tools within finance – e.g., predictive analytics, NLP, or intelligent document processing?",lookFor:"active AI pilots or production use vs. no AI tooling beyond basic automation"},
+      {id:"t8",audience:"it",text:"Once an AI model or automated tool is deployed, is there a mechanism to monitor its performance, retrain it when needed, and retire it if accuracy degrades?",lookFor:"Defined model lifecycle management with monitoring thresholds vs. deploy-and-forget approach with no performance tracking after go-live",isNew:true},
     ],
     vignettes:{
       l2:["The organization runs multiple ERPs with no integration layer; data exchange happens via flat file exports","A cloud strategy exists on paper but no migration has started","Finance uses AI only in the form of vendor-embedded features with no awareness of how they work","No process for monitoring AI tools after deployment"],
@@ -80,6 +82,7 @@ const DIMENSIONS = [
       {id:"ps5",audience:"finance",text:"How would you describe the finance team's general attitude toward AI, is it seen as an opportunity, a threat, or largely irrelevant?",lookFor:"Curiosity and willingness to experiment vs. skepticism, fear, or indifference acting as a barrier"},
       {id:"ps6",audience:"finance",text:"Has the organization successfully managed technology-driven change in finance before, such as ERP migrations, RPA rollouts, or shared service transitions?",lookFor:"Proven change track record with structured methodology vs. history of stalled transformations or significant resistance"},
       {id:"ps7",audience:"both",text:"Are there mechanisms to upskill finance staff on AI tools and data literacy, and does the organization have the L&D infrastructure to scale this across the function?",lookFor:"Ongoing role-specific learning programmes with L&D infrastructure to scale vs. one-off training sessions with no follow-through"},
+      {id:"ps8",audience:"finance",text:"Does the finance team have experience building business cases for technology investments - including defining KPIs, estimating ROI, and securing budget approval?",lookFor:"proven business case track record vs. no structured investment justification process"},
     ],
     vignettes:{
       l2:["The CFO mentions AI in town halls but has not assigned ownership or budget","Operational staff are unsure how AI would affect their work; no formal training exists","A previous RPA rollout was partially successful but met with significant resistance","L&D capability is thin; upskilling depends on individuals finding their own resources"],
@@ -93,7 +96,8 @@ const DIMENSIONS = [
     color:"#1C2833",accent:"#7F8C8D",
     questions:[
       {id:"g1",audience:"finance",text:"Does the organization have a formal AI governance policy, covering ethical use, accountability, and decision-making authority for AI initiatives in finance?",lookFor:"Documented AI policy with defined scope and enforcement vs. no formal guidelines; finance teams using AI tools without organisational guardrails"},
-      {id:"g2",audience:"finance",text:"How well does the organization understand the regulatory landscape for AI in finance, including the EU AI Act, GDPR implications, and obligations when using third-party AI vendors?",lookFor:"Mapped regulatory requirements per jurisdiction, including vendor contract review vs. general awareness without concrete assessment"},
+      {id:"g2",audience:"finance",text:"How well does the organization understand the implications of the EU AI Act for its finance-related AI use cases (regarding high-risk classification, transparency, human oversight)?",lookFor:"mapped AI Act requirements per use case vs. general awareness only"},
+      {id:"g2b",audience:"both",text:"How prepared is the organization to handle GDPR and data privacy requirements when deploying AI in finance (regarding personal data processing and data subject rights?)",lookFor:"AI-specific data privacy assessment completed vs. reliance on general GDPR compliance"},
       {id:"g3",audience:"finance",text:"Are there established processes to ensure AI outputs are explainable and auditable, particularly for decisions affecting financial reporting, controls, or compliance?",lookFor:"Defined explainability standards with audit trails vs. black-box tolerance where AI outputs are accepted without documentation"},
       {id:"g4",audience:"finance",text:"Has your external auditor or internal audit function been briefed on, or formally reviewed, how the organization uses AI in financial processes?",lookFor:"Auditors engaged and informed, with AI use cases documented in the audit scope vs. auditors not consulted and AI use not reflected in control frameworks",isNew:true},
       {id:"g5",audience:"both",text:"Does the organization have a framework for assessing and mitigating AI-specific risks, such as model bias, hallucinations, data privacy breaches, or model drift, beyond general IT risk management?",lookFor:"Formal AI risk framework with specific controls vs. AI risks treated under general IT risk with no differentiated assessment"},
@@ -114,7 +118,7 @@ const AUDIENCE_CFG = {
   both:{label:"Finance + IT",border:"#E67E22",color:"#FAD7A0",dot:"#E67E22"},
 };
 
-const maturityLabel = s => {if(!s)return"Not rated";if(s<1.5)return"Ad-hoc";if(s<2.5)return"Emerging";if(s<3.5)return"Defined";if(s<4.5)return"Advanced";return"AI-Optimized";};
+const maturityLabel = s => {if(!s)return"Not rated";if(s<1.5)return"Beginner";if(s<2.5)return"Emerging";if(s<3.5)return"Defined";if(s<4.5)return"Advanced";return"Expert";};
 const maturityColor = s => {if(!s)return"#94a3b8";if(s<1.5)return"#e74c3c";if(s<2.5)return"#e67e22";if(s<3.5)return"#c9a227";if(s<4.5)return"#27ae60";return"#16a085";};
 const genId = () => Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const fmtDate = d => new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
@@ -343,7 +347,7 @@ function AssessmentView({assessment,onUpdate,onBack}){
   const ScoreBtn=({qid,val})=>{
     const sel=scores[qid]===val;
     const cols=["#e74c3c","#e67e22","#c9a227","#27ae60","#16a085"];
-    const labs=["Ad-hoc","Emerging","Defined","Advanced","Optimized"];
+    const labs=["Beginner","Emerging","Defined","Advanced","Expert"];
     return(
       <button onClick={()=>setScore(qid,val)} title={`${val}: ${labs[val-1]}`}
         style={{width:38,height:38,borderRadius:7,background:sel?cols[val-1]:"rgba(255,255,255,0.04)",border:`2px solid ${sel?cols[val-1]:"rgba(255,255,255,0.1)"}`,color:sel?"#fff":"rgba(255,255,255,0.45)",fontWeight:800,fontSize:14,cursor:"pointer",transition:"all 0.12s",fontFamily:"'DM Sans',sans-serif"}}
@@ -544,7 +548,7 @@ function AssessmentView({assessment,onUpdate,onBack}){
             <div style={{background:"rgba(255,255,255,0.025)",border:"1px solid rgba(255,255,255,0.06)",borderRadius:12,padding:"14px 18px"}}>
               <div style={{fontSize:9,letterSpacing:3,textTransform:"uppercase",color:"rgba(255,255,255,0.2)",marginBottom:12,fontWeight:700}}>Maturity Scale Reference</div>
               <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                {[{s:1,l:"Ad-hoc",d:"Unstructured, reactive",c:"#e74c3c"},{s:2,l:"Emerging",d:"Isolated efforts underway",c:"#e67e22"},{s:3,l:"Defined",d:"Documented, consistent",c:"#c9a227"},{s:4,l:"Advanced",d:"Managed and improving",c:"#27ae60"},{s:5,l:"AI-Optimized",d:"AI-native, continuously scaling",c:"#16a085"}].map(m=>(
+                {[{s:1,l:"Beginner",d:"Unstructured, reactive",c:"#e74c3c"},{s:2,l:"Emerging",d:"Isolated efforts underway",c:"#e67e22"},{s:3,l:"Defined",d:"Documented, consistent",c:"#c9a227"},{s:4,l:"Advanced",d:"Managed and improving",c:"#27ae60"},{s:5,l:"Expert",d:"AI-native, continuously scaling",c:"#16a085"}].map(m=>(
                   <div key={m.s} style={{flex:1,minWidth:120,background:"rgba(255,255,255,0.03)",borderRadius:8,padding:"9px 12px",borderTop:`3px solid ${m.c}`}}>
                     <div style={{display:"flex",gap:6,alignItems:"center",marginBottom:3}}>
                       <div style={{width:19,height:19,borderRadius:5,background:m.c,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,color:"#fff"}}>{m.s}</div>
