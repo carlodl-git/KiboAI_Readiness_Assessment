@@ -740,16 +740,26 @@ const buildExampleAssessment = () => {
   // Curated example answers + notes to demonstrate the UI on first open.
   // Scores are 1–5 and intentionally mixed to create a realistic readiness profile.
   const scores = {
-    // Data
-    d1: 3, d2: 3, d3: 2, d4: 2, d5: 3, d6: 2, d7: 3, d8: 2,
-    // Technology
-    t1: 4, t2: 3, t3: 2, t4: 3, t5: 2, t6: 3, t7: 2, t8: 2,
-    // Process
-    p1: 3, p2: 3, p3: 3, p4: 2, p5: 2, p6: 3, p7: 2,
-    // People & Skills
-    ps1: 3, ps2: 2, ps3: 3, ps4: 2, ps5: 3, ps6: 3, ps7: 2, ps8: 3,
-    // Governance
-    g1: 2, g2: 2, g2b: 2, g3: 2, g4: 1, g5: 2, g6: 2, g7: 2,
+    // Data  (target avg 2.8)
+    d1: 3, d2: 3, d3: 3, d4: 3, d5: 3, d6: 2, d7: 3, d8: 2,
+    // Technology  (target avg 2.5)
+    t1: 3, t2: 3, t3: 2, t4: 2, t5: 3, t6: 2, t7: 3, t8: 2,
+    // Process  (target avg 2.1)
+    p1: 2, p2: 3, p3: 2, p4: 2, p5: 2, p6: 2, p7: 2,
+    // People & Skills  (target avg 2.0)
+    ps1: 2, ps2: 2, ps3: 2, ps4: 2, ps5: 2, ps6: 2, ps7: 2, ps8: 2,
+    // Governance  (target avg 1.8)
+    g1: 2, g2: 2, g2b: 2, g3: 2, g4: 1, g5: 2, g6: 2, g7: 1,
+  };
+
+  // Override dimension averages to exact requested values
+  // (integer question scores can't always produce exact decimal averages)
+  const dimensionScoreOverrides = {
+    data: 2.8,
+    tech: 2.5,
+    process: 2.1,
+    people: 2.0,
+    governance: 1.8,
   };
 
   const notes = {
@@ -781,11 +791,14 @@ const buildExampleAssessment = () => {
   const now = Date.now();
   return {
     id: EXAMPLE_ASSESSMENT_ID,
-    companyName: "Example Co. (Demo)",
-    consultantName: "Kibo AI",
-    workshopDate: new Date(now).toISOString().slice(0, 10),
+    companyName: "Heinz Ltd.",
+    consultantName: "",
+    facilitatedBy: "Richard Wotherspoon, Senior Consultant",
+    participants: "Thomas Muller, CFO",
+    workshopDate: "2026-04-21",
     scores,
     notes,
+    dimensionScoreOverrides,
     createdAt: now - 1000 * 60 * 60 * 24 * 7,
     updatedAt: now - 1000 * 60 * 30,
   };
@@ -1170,10 +1183,14 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
               {sorted.map((a) => {
                 const dimScores = {};
                 DIMENSIONS.forEach((d) => {
-                  const ans = d.questions.filter((q) => a.scores[q.id]);
-                  if (ans.length) {
-                    dimScores[d.id] =
-                      ans.reduce((s, q) => s + a.scores[q.id], 0) / ans.length;
+                  if (a.dimensionScoreOverrides && a.dimensionScoreOverrides[d.id] != null) {
+                    dimScores[d.id] = a.dimensionScoreOverrides[d.id];
+                  } else {
+                    const ans = d.questions.filter((q) => a.scores[q.id]);
+                    if (ans.length) {
+                      dimScores[d.id] =
+                        ans.reduce((s, q) => s + a.scores[q.id], 0) / ans.length;
+                    }
                   }
                 });
                 const overall = Object.values(dimScores).length
@@ -1265,9 +1282,19 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
                             color: "rgba(15,23,42,0.6)",
                           }}
                         >
-                          {a.consultantName && (
+                          {a.facilitatedBy && (
+                            <span style={{ marginRight: 10 }}>
+                              👤 {a.facilitatedBy}
+                            </span>
+                          )}
+                          {a.consultantName && !a.facilitatedBy && (
                             <span style={{ marginRight: 10 }}>
                               👤 {a.consultantName}
+                            </span>
+                          )}
+                          {a.participants && (
+                            <span style={{ marginRight: 10 }}>
+                              🧑‍💼 {a.participants}
                             </span>
                           )}
                           <span>Updated {fmtDate(a.updatedAt)}</span>
@@ -1528,6 +1555,8 @@ function Landing({ assessments, onNew, onOpen, onDelete }) {
 function NewAssessmentModal({ onClose, onCreate }) {
   const [companyName, setCompanyName] = useState("");
   const [consultantName, setConsultantName] = useState("");
+  const [facilitatedBy, setFacilitatedBy] = useState("");
+  const [participants, setParticipants] = useState("");
   const [workshopDate, setWorkshopDate] = useState(
     new Date().toISOString().slice(0, 10),
   );
@@ -1540,6 +1569,8 @@ function NewAssessmentModal({ onClose, onCreate }) {
     onCreate({
       companyName: companyName.trim(),
       consultantName: consultantName.trim(),
+      facilitatedBy: facilitatedBy.trim(),
+      participants: participants.trim(),
       workshopDate,
     });
   };
@@ -1625,10 +1656,16 @@ function NewAssessmentModal({ onClose, onCreate }) {
               enter: true,
             },
             {
-              label: "Consultant Name",
-              val: consultantName,
-              set: setConsultantName,
-              ph: "e.g. Sarah Müller",
+              label: "Facilitated By",
+              val: facilitatedBy,
+              set: setFacilitatedBy,
+              ph: "e.g. Sarah Müller, Senior Consultant",
+            },
+            {
+              label: "Participants",
+              val: participants,
+              set: setParticipants,
+              ph: "e.g. John Smith, CFO; Jane Doe, CTO",
             },
           ].map(({ label, val, set, ph, ref, enter }, i) => (
             <div key={i}>
@@ -1775,6 +1812,9 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
   };
 
   const getDimScore = (d) => {
+    if (assessment.dimensionScoreOverrides && assessment.dimensionScoreOverrides[d.id] != null) {
+      return assessment.dimensionScoreOverrides[d.id];
+    }
     const ans = d.questions.filter((q) => scores[q.id]);
     if (!ans.length) return null;
     return ans.reduce((a, q) => a + scores[q.id], 0) / ans.length;
@@ -2008,7 +2048,18 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
           >
             {assessment.companyName}
           </span>
-          {assessment.consultantName && (
+          {assessment.facilitatedBy && (
+            <span
+              style={{
+                fontSize: 11,
+                color: "#6b7280",
+                marginLeft: 8,
+              }}
+            >
+              · Facilitated by: {assessment.facilitatedBy}
+            </span>
+          )}
+          {assessment.consultantName && !assessment.facilitatedBy && (
             <span
               style={{
                 fontSize: 11,
@@ -2017,6 +2068,17 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
               }}
             >
               · {assessment.consultantName}
+            </span>
+          )}
+          {assessment.participants && (
+            <span
+              style={{
+                fontSize: 11,
+                color: "#6b7280",
+                marginLeft: 8,
+              }}
+            >
+              · Participants: {assessment.participants}
             </span>
           )}
           {assessment.workshopDate && (
@@ -2745,6 +2807,9 @@ function AssessmentView({ assessment, onUpdate, onBack }) {
                 >
                   {totalAnswered} of {totalQ} questions answered ·{" "}
                   {DIMENSIONS.length} dimensions
+                  {assessment.facilitatedBy && (<><br/>Facilitated by: {assessment.facilitatedBy}</>)}
+                  {assessment.participants && (<><br/>Participants: {assessment.participants}</>)}
+                  {assessment.workshopDate && (<><br/>Workshop date: {fmtDate(new Date(assessment.workshopDate).getTime() + 43200000)}</>)}
                 </p>
               </div>
               {overall && (
@@ -3605,11 +3670,13 @@ export default function Home() {
   const [activeId, setActiveId] = useState(null);
   const [showNew, setShowNew] = useState(false);
 
-  const handleCreate = ({ companyName, consultantName, workshopDate }) => {
+  const handleCreate = ({ companyName, consultantName, facilitatedBy, participants, workshopDate }) => {
     const a = {
       id: genId(),
       companyName,
       consultantName,
+      facilitatedBy,
+      participants,
       workshopDate,
       scores: {},
       notes: {},
